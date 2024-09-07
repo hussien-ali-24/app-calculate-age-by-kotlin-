@@ -1,0 +1,39 @@
+package com.example.ageapp
+
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import java.text.SimpleDateFormat
+import java.util.*
+
+class MainActivity : AppCompatActivity() {
+    private lateinit var etBirthDate: EditText
+    private lateinit var btnCalculate: Button
+    private lateinit var tvResult: TextView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        etBirthDate = findViewById(R.id.etBirthDate)
+        btnCalculate = findViewById(R.id.btnCalculate)
+        tvResult = findViewById(R.id.tvResult)
+
+        btnCalculate.setOnClickListener {
+            val birthDateStr = etBirthDate.text.toString()
+            val sdf = SimpleDateFormat("yyyy-MM-dd")
+            try {
+                val birthDate = sdf.parse(birthDateStr)
+                val calendar = Calendar.getInstance()
+                val currentDate = calendar.time
+                val diff = currentDate.time - birthDate.time
+                val years = diff / (1000L * 60 * 60 * 24 * 365)
+                tvResult.text = "عمرك هو: $years سنة"
+            } catch (e: Exception) {
+                tvResult.text = "تاريخ الميلاد غير صحيح"
+            }
+        }
+    }
+}
